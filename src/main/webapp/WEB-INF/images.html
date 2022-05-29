@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title th:text="${'Add to ' + album.title + ' | ImageGallery'}">Add to Album | ImageGallery</title>
+<link rel="stylesheet" type="text/css" media="all" href="../CSS/style.css" th:href="@{/css/style.css}" />
+</head>
+
+<body>
+	<div class="button-header">
+		<a class="align-left" th:href="@{/GoToAlbumPage(albumId = ${album.id}, page = 1)}">Back to album page</a>
+		<a class="align-right" th:href="@{/LogoutUser}">Logout</a>
+	</div>
+	
+	<h1 th:text="${'Add images to ' + album.title}">Add to Album</h1>
+	<p>Click on any image to add it to <span class="bold-text" th:text="${album.title}"></span></p>
+	
+	<div>
+		<h4 th:if="${images.size() == 0}">No images to add!</h4>
+		<div th:if="${images.size() > 0}" class="grid-container multi-row">
+			<div class="grid-item" th:each="image : ${images}">
+				<div class="image-container-grid">
+					<img class="image" th:src="@{${image.filePath}}" />
+				</div>
+				<p class="image-title" th:text="${image.title}"></p>
+				<form class="align-center" action="AddToAlbum" method="POST">
+					<input type="hidden" name="redirectToAlbum" th:value="${false}" />
+					<input type="hidden" name="userId" th:value="${session.userId}" />
+					<input type="hidden" name="targetAlbum" th:value="${album.id}" />
+					<input type="hidden" name="selectedImageId" th:value="${image.id}" />
+					<input type="submit" value="Add" />
+				</form>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

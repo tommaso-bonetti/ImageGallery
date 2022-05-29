@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title th:text="${album.title + ' | ImageGallery'}">Album Details | ImageGallery</title>
+<link rel="stylesheet" type="text/css" media="all" href="../CSS/style.css" th:href="@{/css/style.css}" />
+</head>
+
+<body>
+	<div class="button-header">
+		<a class="align-left" th:href="@{/GoToHomePage}">Back to home</a>
+		<a class="align-right" th:href="@{/LogoutUser}">Logout</a>
+	</div>
+	
+	<h1 th:text="${album.title}">Album Page</h1>
+	<p>
+		<span>by </span>
+		<span class="bold-text" th:text="${album.ownerUsername}">by Author</span>
+		<span> - </span>
+		<span th:text="${'created ' + album.formattedDate}">created 10/07/2022</span>
+	</p>
+	<p>
+		<a th:href="@{/GoToImagesPage(albumId = ${album.id})}">Add images</a>
+	</p>
+	
+	<div th:insert="@{WEB-INF/albumimages.html} :: gallery(${images}, ${album.id}, ${page})"></div>
+	
+	<div class="button-container">
+		<a class="align-left" th:if="${page > 1}"
+			 th:href="@{/GoToAlbumPage(albumId = ${album.id}, page = ${page} - 1)}">Show previous</a>
+		<a class="align-right" th:if="${lastPage == false}"
+			 th:href="@{/GoToAlbumPage(albumId = ${album.id}, page = ${page} + 1)}">Show next</a>
+	</div>
+	
+	<div th:if="${selectedImage != null}" class="row">
+		<div class="column margin-1 image-container-flex">
+			<img class="image" th:src="@{${selectedImage.filePath}}" />
+		</div>
+		
+		<div class="column margin-1">
+			<h2 th:text="${selectedImage.title}">Title</h2>
+			<p th:text="${selectedImage.description}">Description</p>
+			
+			<div class="row">
+				<div class="column">
+					<p class="light-text text-90"th:text="${'Uploaded ' + selectedImage.formattedDate}">Upload date</p>
+				</div>
+				
+				<div class="column" th:if="${otherAlbums != null && album.ownerId == session.userId}">
+					<form th:action="@{/AddToAlbum}" method="POST">
+						<p>
+							<span class="light-text text-90">Add image to: </span>
+							<select id="targetAlbum" name="targetAlbum">
+								<option value="-1" selected disabled>select an album...</option>
+								<option th:each="album : ${otherAlbums}" th:text="${album.title}" th:value="${album.id}"></option>
+							</select>
+						</p>
+						<input type="hidden" name="redirectToAlbum" th:value="${true}" />
+						<input type="hidden" name="userId" th:value="${session.userId}" />
+						<input type="hidden" name="originAlbumId" th:value="${album.id}" />
+						<input type="hidden" name="page" th:value="${page}" />
+						<input type="hidden" name="selectedImageId" th:value="${selectedImage.id}" />
+						<input type="submit" value="Confirm" />
+					</form>
+				</div>
+			</div>
+			
+			<h3>Comments</h3>
+			<p th:if="${comments.size() == 0}">No comments yet.</p>
+			
+			<div class="comment" th:if="${comments.size() > 0}" th:each="comment : ${comments}">
+				<p class="comment-body text-90" th:text="${comment.body}"></p>
+				<p class="comment-details text-75">
+					<span class="light-text">by </span>
+					<span class="bold-text" th:text="${comment.publisherUsername}">User</span>
+					<span class="light-text"> - </span>
+					<span class="light-text" th:text="${comment.formattedDate}">10/07/2022</span>
+				</p>
+			</div>
+			
+			<form action="PublishComment" method="POST">
+				<p>Add your comment here!</p>
+				<p>
+					<textarea class ="textarea text-90" id="commentBody" name="commentBody"></textarea>
+				</p>
+				<input type="hidden" name="userId" th:value="${session.userId}" />
+				<input type="hidden" name="albumId" th:value="${album.id}" />
+				<input type="hidden" name="page" th:value="${page}" />
+				<input type="hidden" name="selectedImageId" th:value="${selectedImage.id}" />
+				<input type="submit" value="Publish" />
+				<p class="error" th:text="${commentErrorMessage}"></p>
+			</form>
+		</div>
+	</div>
+</body>
+</html>

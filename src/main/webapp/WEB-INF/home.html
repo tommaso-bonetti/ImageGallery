@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Home | ImageGallery</title>
+<link rel="stylesheet" type="text/css" media="all" href="../css/style.css" th:href="@{/css/style.css}" />
+</head>
+
+<body>
+	<div class="button-header">
+		<a class="align-right" th:href="@{/LogoutUser}">Logout</a>
+	</div>
+	<h1>Welcome, <span th:text="${user.username}">Pippo12345</span></h1>
+	<p>Browse your and other users' albums here.</p>
+	<p>Click on any album to navigate to its album page.</p>
+	<div class="row">
+		<div class="column margin-1">
+			<h2>Your albums</h2>
+			<table>
+				<thead>
+					<tr>
+						<th>Title</th>
+						<th>Created by</th>
+						<th>Creation date</th>
+					</tr>
+				</thead>
+				<tbody th:remove="all-but-first">
+					<tr th:each="album : ${userAlbums}">
+						<td th:text="${album.title}"></td>
+						<td th:text="${album.ownerUsername}"></td>
+						<td th:text="${album.formattedDate}"></td>
+						<td>
+							<a th:href="@{/GoToAlbumPage(albumId = ${album.id}, page = 1)}">
+								See more
+							</a>
+						</td>
+					</tr>
+					<tr>
+						<td>Album 1</td>
+						<td>User</td>
+						<td>10/07/2022</td>
+						<td>
+							<a href="album.html">Album page</a>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<div>
+				<h4>Create a new album</h4>
+				<form action="CreateAlbum" method="POST">
+					<p>
+						Album title: <input type="text" id="albumTitle" name="albumTitle" />
+					</p>
+					<input type="hidden" name="userId" th:value="${session.userId}" />
+					<input type="submit" value="Confirm" />
+				</form>
+			</div>
+		</div>
+		<div class="column margin-1">
+			<h2>Other users' albums</h2>
+			<table>
+				<thead>
+					<tr>
+						<th>Title</th>
+						<th>Created by</th>
+						<th>Creation date</th>
+					</tr>
+				</thead>
+				<tbody th:remove="all-but-first">
+					<tr th:each="album : ${otherAlbums}">
+						<td th:text="${album.title}"></td>
+						<td th:text="${album.ownerUsername}"></td>
+						<td th:text="${album.formattedDate}"></td>
+						<td>
+							<a th:href="@{/GoToAlbumPage(albumId = ${album.id}, page = 1)}">
+								See more
+							</a>
+						</td>
+					</tr>
+					<tr>
+						<td>Album 2</td>
+						<td>User</td>
+						<td>10/07/2022</td>
+						<td>
+							<a href="album.html">Album page</a>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</body>
+</html>

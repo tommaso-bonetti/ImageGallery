@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<link rel="stylesheet" type="text/css" media="all" href="../CSS/style.css" th:href="@{/css/style.css}" />
+
+<body>
+	<div th:fragment="gallery(images, albumId, page)">
+		<h4 th:if="${images.size() == 0}">No images yet!</h4>
+		<div th:if="${images.size() > 0}" class="grid-container single-row">
+			<div class="grid-item" th:each="image : ${images}">
+				<div class="image-container-grid">
+					<a th:href="@{/GoToAlbumPage(albumId = ${album.id}, page = ${page}, selectedImageId = ${image.id})}">
+						<img class="image" th:src="@{${image.filePath}}" />
+					</a>
+				</div>
+				<p class="image-title" th:text="${image.title}"></p>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
