@@ -59,6 +59,7 @@ public class CreateAlbum extends HttpServlet {
 			albumDAO.createAlbum(userId, albumTitle);
 		} catch (SQLException e) {
 			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Unable to create album");
+			return;
 		}
 		
 		response.sendRedirect(getServletContext().getContextPath() + "/GoToHomePage");

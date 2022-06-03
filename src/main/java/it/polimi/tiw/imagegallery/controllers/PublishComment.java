@@ -66,6 +66,7 @@ public class PublishComment extends HttpServlet {
 			commentDAO.createComment(userId, imageId, commentBody);
 		} catch (SQLException e) {
 			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Unable to publish comment");
+			return;
 		}
 		
 		String path =	String.format(
