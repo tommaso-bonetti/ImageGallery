@@ -25,27 +25,12 @@
   	<filter-class>it.polimi.tiw.imagegallery.filters.LoginChecker</filter-class>
   </filter>
   <filter-mapping> 
-    <filter-name>LoginChecker</filter-name> 
-    <url-pattern>/GoToHomePage</url-pattern> 
-	</filter-mapping>
-	<filter-mapping> 
-	   <filter-name>LoginChecker</filter-name> 
-	   <url-pattern>/GoToAlbumPage</url-pattern> 
-	</filter-mapping>
-	<filter-mapping> 
-	   <filter-name>LoginChecker</filter-name> 
-	   <url-pattern>/PublishComment</url-pattern> 
-	</filter-mapping>
-	<filter-mapping> 
-	   <filter-name>LoginChecker</filter-name> 
-	   <url-pattern>/AddToAlbums</url-pattern> 
-	</filter-mapping>
-	<filter-mapping> 
-	   <filter-name>LoginChecker</filter-name> 
-	   <url-pattern>/CreateAlbum</url-pattern> 
-	</filter-mapping>
-	<filter-mapping> 
-	   <filter-name>LoginChecker</filter-name> 
-	   <url-pattern>/GoToImagesPage</url-pattern> 
+    <filter-name>LoginChecker</filter-name>
+    <url-pattern>/AddToAlbum</url-pattern>
+    <url-pattern>/CreateAlbum</url-pattern>
+    <url-pattern>/GoToAlbumPage</url-pattern>
+    <url-pattern>/GoToHomePage</url-pattern>
+    <url-pattern>/GoToImagesPage</url-pattern> 
+    <url-pattern>/PublishComment</url-pattern>
 	</filter-mapping>
 </web-app>
