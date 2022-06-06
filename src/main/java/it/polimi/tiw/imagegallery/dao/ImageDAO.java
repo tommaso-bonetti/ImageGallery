@@ -31,7 +31,7 @@ public class ImageDAO {
 					image.setId(res.getInt("imageId"));
 					image.setTitle(res.getString("title"));
 					image.setDescription(res.getString("description"));
-					image.setUploadDate(res.getDate("uploadDate"));
+					image.setUploadDate(res.getTimestamp("uploadDate"));
 					image.setFilePath(res.getString("filePath"));
 					image.setOwnerId(res.getInt("ownerId"));
 					return image;
@@ -45,7 +45,7 @@ public class ImageDAO {
 		
 		String query =
 				"SELECT * FROM Image WHERE imageId = ANY (SELECT imageId FROM AlbumImages WHERE albumId = ?)"
-				+ " ORDER BY imageId DESC LIMIT ?, ?";
+				+ " ORDER BY uploadDate DESC LIMIT ?, ?";
 		try (PreparedStatement prepStatement = connection.prepareStatement(query)) {
 			prepStatement.setInt(1, albumId);
 			prepStatement.setInt(2, 5 * (page-1));
@@ -56,7 +56,7 @@ public class ImageDAO {
 					image.setId(res.getInt("imageId"));
 					image.setTitle(res.getString("title"));
 					image.setDescription(res.getString("description"));
-					image.setUploadDate(res.getDate("uploadDate"));
+					image.setUploadDate(res.getTimestamp("uploadDate"));
 					image.setFilePath(res.getString("filePath"));
 					image.setOwnerId(res.getInt("ownerId"));
 					images.add(image);
@@ -80,7 +80,7 @@ public class ImageDAO {
 					image.setId(res.getInt("imageId"));
 					image.setTitle(res.getString("title"));
 					image.setDescription(res.getString("description"));
-					image.setUploadDate(res.getDate("uploadDate"));
+					image.setUploadDate(res.getTimestamp("uploadDate"));
 					image.setFilePath(res.getString("filePath"));
 					image.setOwnerId(res.getInt("ownerId"));
 					images.add(image);

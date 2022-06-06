@@ -1,6 +1,6 @@
 package it.polimi.tiw.imagegallery.beans;
 
-import java.sql.Date;
+import java.util.Date;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 

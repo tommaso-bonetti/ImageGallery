@@ -21,7 +21,7 @@ public class AlbumDAO {
 		List<Album> albums = new ArrayList<>();
 		
 		String query = "SELECT albumId, title, creationDate, ownerId, username FROM Album JOIN User"
-				+ " ON Album.ownerId = User.userId WHERE ownerId = ? ORDER BY albumId DESC";
+				+ " ON Album.ownerId = User.userId WHERE ownerId = ? ORDER BY creationDate DESC";
 		try (PreparedStatement prepStatement = connection.prepareStatement(query)) {
 			prepStatement.setInt(1, ownerId);
 			try (ResultSet res = prepStatement.executeQuery()) {
@@ -29,7 +29,7 @@ public class AlbumDAO {
 					Album album = new Album();
 					album.setId(res.getInt("albumId"));
 					album.setTitle(res.getString("title"));
-					album.setCreationDate(res.getDate("creationDate"));
+					album.setCreationDate(res.getTimestamp("creationDate"));
 					album.setOwnerId(res.getInt("ownerId"));
 					album.setOwnerUsername(res.getString("username"));
 					albums.add(album);
@@ -44,7 +44,7 @@ public class AlbumDAO {
 		List<Album> albums = new ArrayList<>();
 		
 		String query = "SELECT albumId, title, creationDate, ownerId, username FROM Album JOIN User"
-				+ " ON Album.ownerId = User.userId WHERE ownerId <> ? ORDER BY albumId DESC";
+				+ " ON Album.ownerId = User.userId WHERE ownerId <> ? ORDER BY creationDate DESC";
 		try (PreparedStatement prepStatement = connection.prepareStatement(query)) {
 			prepStatement.setInt(1, ownerId);
 			try (ResultSet res = prepStatement.executeQuery()) {
@@ -52,7 +52,7 @@ public class AlbumDAO {
 					Album album = new Album();
 					album.setId(res.getInt("albumId"));
 					album.setTitle(res.getString("title"));
-					album.setCreationDate(res.getDate("creationDate"));
+					album.setCreationDate(res.getTimestamp("creationDate"));
 					album.setOwnerId(res.getInt("ownerId"));
 					album.setOwnerUsername(res.getString("username"));
 					albums.add(album);
@@ -76,7 +76,7 @@ public class AlbumDAO {
 					Album album= new Album();
 					album.setId(res.getInt("albumId"));
 					album.setTitle(res.getString("title"));
-					album.setCreationDate(res.getDate("creationDate"));
+					album.setCreationDate(res.getTimestamp("creationDate"));
 					album.setOwnerId(res.getInt("ownerId"));
 					album.setOwnerUsername(res.getString("username"));
 					return album;
@@ -99,7 +99,7 @@ public class AlbumDAO {
 		List<Album> albums = new ArrayList<>();
 		
 		String query = "SELECT albumId, title, creationDate, ownerId, username FROM Album JOIN User"
-				+ " ON Album.ownerId = User.userId WHERE ownerId = ? AND albumId <> ? ORDER BY albumId DESC";
+				+ " ON Album.ownerId = User.userId WHERE ownerId = ? AND albumId <> ? ORDER BY creationDate DESC";
 		try (PreparedStatement prepStatement = connection.prepareStatement(query)) {
 			prepStatement.setInt(1, ownerId);
 			prepStatement.setInt(2, albumId);
@@ -108,7 +108,7 @@ public class AlbumDAO {
 					Album album = new Album();
 					album.setId(res.getInt("albumId"));
 					album.setTitle(res.getString("title"));
-					album.setCreationDate(res.getDate("creationDate"));
+					album.setCreationDate(res.getTimestamp("creationDate"));
 					album.setOwnerId(res.getInt("ownerId"));
 					album.setOwnerUsername(res.getString("username"));
 					albums.add(album);
