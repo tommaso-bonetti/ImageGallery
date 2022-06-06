@@ -11,14 +11,8 @@ public class Comment {
 	private String publisherUsername;
 	private int imageId;
 	private Date publishedDate;
-	private String formattedDate;
 	
-	private final DateFormat formatter;
-	
-	public Comment() {
-		super();
-		formatter = new SimpleDateFormat("dd/MM/yyyy");
-	}
+	private static final DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 	
 	public int getId() {
 		return id;
@@ -66,14 +60,9 @@ public class Comment {
 
 	public void setPublishedDate(Date publishedDate) {
 		this.publishedDate = publishedDate;
-		this.setFormattedDate(formatter.format(publishedDate));
 	}
 
 	public String getFormattedDate() {
-		return formattedDate;
-	}
-
-	private void setFormattedDate(String formattedDate) {
-		this.formattedDate = formattedDate;
+		return formatter.format(publishedDate);
 	}
 }

@@ -8,16 +8,10 @@ public class Album {
 	private int id;
 	private String title;
 	private Date creationDate;
-	private String formattedDate;
 	private int ownerId;
 	private String ownerUsername;
 	
-	private final DateFormat formatter;
-	
-	public Album() {
-		super();
-		formatter = new SimpleDateFormat("dd/MM/yyyy");
-	}
+	private static final DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 	
 	public int getId() {
 		return id;
@@ -41,7 +35,6 @@ public class Album {
 	
 	public void setCreationDate(Date creationDate) {
 		this.creationDate = creationDate;
-		this.setFormattedDate(formatter.format(creationDate));
 	}
 	
 	public int getOwnerId() {
@@ -61,10 +54,6 @@ public class Album {
 	}
 
 	public String getFormattedDate() {
-		return formattedDate;
-	}
-
-	private void setFormattedDate(String formattedDate) {
-		this.formattedDate = formattedDate;
+		return formatter.format(creationDate);
 	}
 }

@@ -28,7 +28,7 @@
 					<tr th:each="album : ${userAlbums}">
 						<td th:text="${album.title}"></td>
 						<td th:text="${album.ownerUsername}"></td>
-						<td th:text="${album.formattedDate}"></td>
+						<td th:text="${album.getFormattedDate()}"></td>
 						<td>
 							<a th:href="@{/GoToAlbumPage(albumId = ${album.id}, page = 1)}">
 								See more
@@ -70,7 +70,7 @@
 					<tr th:each="album : ${otherAlbums}">
 						<td th:text="${album.title}"></td>
 						<td th:text="${album.ownerUsername}"></td>
-						<td th:text="${album.formattedDate}"></td>
+						<td th:text="${album.getFormattedDate()}"></td>
 						<td>
 							<a th:href="@{/GoToAlbumPage(albumId = ${album.id}, page = 1)}">
 								See more

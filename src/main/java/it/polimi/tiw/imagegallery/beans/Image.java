@@ -9,16 +9,10 @@ public class Image {
 	private String title;
 	private String description;
 	private Date uploadDate;
-	private String formattedDate;
 	private String filePath;
 	private int ownerId;
 	
-	private final DateFormat formatter;
-	
-	public Image() {
-		super();
-		formatter = new SimpleDateFormat("dd/MM/yyyy");
-	}
+	private static final DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 	
 	public int getId() {
 		return id;
@@ -50,7 +44,6 @@ public class Image {
 	
 	public void setUploadDate(Date uploadDate) {
 		this.uploadDate = uploadDate;
-		this.setFormattedDate(formatter.format(uploadDate));
 	}
 	
 	public String getFilePath() {
@@ -70,10 +63,6 @@ public class Image {
 	}
 
 	public String getFormattedDate() {
-		return formattedDate;
-	}
-
-	private void setFormattedDate(String formattedDate) {
-		this.formattedDate = formattedDate;
+		return formatter.format(uploadDate);
 	}
 }
