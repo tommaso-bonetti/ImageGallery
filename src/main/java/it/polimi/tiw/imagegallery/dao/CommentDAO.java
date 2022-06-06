@@ -1,10 +1,10 @@
 package it.polimi.tiw.imagegallery.dao;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,7 +47,7 @@ public class CommentDAO {
 			prepStatement.setString(1, body);
 			prepStatement.setInt(2, publisherId);
 			prepStatement.setInt(3, imageId);
-			prepStatement.setDate(4, new Date(System.currentTimeMillis()));
+			prepStatement.setTimestamp(4, new Timestamp(System.currentTimeMillis()));
 			prepStatement.executeUpdate();
 		}
 	}

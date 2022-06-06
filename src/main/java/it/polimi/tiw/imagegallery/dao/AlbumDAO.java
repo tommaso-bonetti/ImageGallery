@@ -1,10 +1,10 @@
 package it.polimi.tiw.imagegallery.dao;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -89,7 +89,7 @@ public class AlbumDAO {
 		String query = "INSERT INTO Album (title, creationDate, ownerId) VALUES (?, ?, ?)";
 		try (PreparedStatement prepStatement = connection.prepareStatement(query)) {
 			prepStatement.setString(1, albumTitle);
-			prepStatement.setDate(2, new Date(System.currentTimeMillis()));
+			prepStatement.setTimestamp(2, new Timestamp(System.currentTimeMillis()));
 			prepStatement.setInt(3, userId);
 			prepStatement.executeUpdate();
 		}
