@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 import org.thymeleaf.templatemode.TemplateMode;
@@ -50,9 +51,9 @@ public class GoToAlbumPage extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		String albumIdString = request.getParameter("albumId");
-		String pageString = request.getParameter("page");
-		String selectedImageIdString = request.getParameter("selectedImageId");
+		String albumIdString = StringEscapeUtils.escapeJava(request.getParameter("albumId"));
+		String pageString = StringEscapeUtils.escapeJava(request.getParameter("page"));
+		String selectedImageIdString = StringEscapeUtils.escapeJava(request.getParameter("selectedImageId"));
 		
 		int albumId;
 		int page;

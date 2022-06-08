@@ -12,6 +12,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.StringEscapeUtils;
+
 import it.polimi.tiw.imagegallery.dao.CommentDAO;
 import it.polimi.tiw.imagegallery.utils.ConnectionManager;
 
@@ -33,9 +35,9 @@ public class PublishComment extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		String userIdString = request.getParameter("userId");
-		String imageIdString = request.getParameter("selectedImageId");
-		String commentBody = request.getParameter("commentBody");
+		String userIdString = StringEscapeUtils.escapeJava(request.getParameter("userId"));
+		String imageIdString = StringEscapeUtils.escapeJava(request.getParameter("selectedImageId"));
+		String commentBody = StringEscapeUtils.escapeJava(request.getParameter("commentBody"));
 		
 		try {
 			if (userIdString == null || userIdString.isEmpty())
