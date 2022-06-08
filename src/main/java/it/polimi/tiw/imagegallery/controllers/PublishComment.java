@@ -35,13 +35,16 @@ public class PublishComment extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		String userIdString = StringEscapeUtils.escapeJava(request.getParameter("userId"));
 		String imageIdString = StringEscapeUtils.escapeJava(request.getParameter("selectedImageId"));
 		String commentBody = StringEscapeUtils.escapeJava(request.getParameter("commentBody"));
 		
+		Integer userId = (Integer) request.getSession().getAttribute("userId");		
+		if (userId == null) {
+			response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Missing user session");
+			return;
+		}
+		
 		try {
-			if (userIdString == null || userIdString.isEmpty())
-				throw new Exception("Missing user session");
 			if (imageIdString == null || imageIdString.isEmpty())
 				throw new Exception("Missing image id");
 			if (commentBody == null || commentBody.isBlank())
@@ -51,14 +54,12 @@ public class PublishComment extends HttpServlet {
 			return;
 		}
 		
-		int userId;
 		int imageId;
 		
 		try {
-			userId = Integer.parseInt(userIdString);
 			imageId = Integer.parseInt(imageIdString);
 		} catch (NumberFormatException e) {
-			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid user or image selection");
+			response.sendError(HttpServletResponse.SC_NOT_FOUND, "Invalid image selection");
 			return;
 		}
 		

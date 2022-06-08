@@ -52,6 +52,12 @@ public class GoToImagesPage extends HttpServlet {
 		String albumIdString = StringEscapeUtils.escapeJava(request.getParameter("albumId"));
 		int albumId;
 		
+		Integer userId = (Integer) request.getSession().getAttribute("userId");		
+		if (userId == null) {
+			response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Missing user session");
+			return;
+		}
+		
 		try {
 			albumId = Integer.parseInt(albumIdString);
 		} catch (NumberFormatException e) {
@@ -59,7 +65,6 @@ public class GoToImagesPage extends HttpServlet {
 			return;
 		}
 		
-		int userId = (Integer) request.getSession().getAttribute("userId");
 		List<Image> images = null;
 		ImageDAO imageDAO = new ImageDAO(connection);
 		Album album = null;

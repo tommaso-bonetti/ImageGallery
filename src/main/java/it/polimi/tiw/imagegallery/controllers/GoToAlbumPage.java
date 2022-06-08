@@ -55,6 +55,12 @@ public class GoToAlbumPage extends HttpServlet {
 		String pageString = StringEscapeUtils.escapeJava(request.getParameter("page"));
 		String selectedImageIdString = StringEscapeUtils.escapeJava(request.getParameter("selectedImageId"));
 		
+		Integer userId = (Integer) request.getSession().getAttribute("userId");		
+		if (userId == null) {
+			response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Missing user session");
+			return;
+		}
+		
 		int albumId;
 		int page;
 		
@@ -85,7 +91,7 @@ public class GoToAlbumPage extends HttpServlet {
 					selectedImage = imageDAO.fetchImageById(selectedImageId, albumId);
 					selectedImageComments = commentDAO.fetchCommentsByImage(selectedImageId);
 				} catch (NumberFormatException e) {
-					response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid image id");
+					response.sendError(HttpServletResponse.SC_NOT_FOUND, "Invalid image id");
 					return;
 				}
 			}
@@ -111,12 +117,10 @@ public class GoToAlbumPage extends HttpServlet {
 		
 		if (selectedImage != null) {
 			try {
-				int userId = (Integer) request.getSession().getAttribute("userId");
 				otherAlbums = albumDAO.fetchOtherAlbumsByUser(userId, albumId);
 			} catch (Exception e) {
 				e.printStackTrace();
-				response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
-						"Error in retrieving albums from the database");
+				response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error in retrieving albums from the database");
 				return;
 			}
 		}

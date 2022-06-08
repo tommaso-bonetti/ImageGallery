@@ -34,24 +34,19 @@ public class CreateAlbum extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		String userIdString = StringEscapeUtils.escapeJava(request.getParameter("userId"));
 		String albumTitle = StringEscapeUtils.escapeJava(request.getParameter("albumTitle"));
 		
+		Integer userId = (Integer) request.getSession().getAttribute("userId");		
+		if (userId == null) {
+			response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Missing user session");
+			return;
+		}
+		
 		try {
-			if (userIdString == null || userIdString.isEmpty())
-				throw new Exception("Missing user session");
 			if (albumTitle == null || albumTitle.isBlank())
 				throw new Exception("Missing or empty album title");
 		} catch (Exception e) {
 			response.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
-			return;
-		}
-		
-		int userId;		
-		try {
-			userId = Integer.parseInt(userIdString);
-		} catch (NumberFormatException e) {
-			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid user id");
 			return;
 		}
 		

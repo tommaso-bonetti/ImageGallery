@@ -50,8 +50,13 @@ public class GoToHomePage extends HttpServlet {
 			throws ServletException, IOException {
 		List<Album> userAlbums = null;
 		List<Album> otherAlbums = null;
-		int currentUserId = (int) request.getSession().getAttribute("userId");
+		Integer currentUserId = (Integer) request.getSession().getAttribute("userId");
 		User currentUser = null;
+		
+		if (currentUserId == null) {
+			response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Missing user session");
+			return;
+		}
 		
 		UserDAO userDAO = new UserDAO(connection);
 		try {
@@ -63,8 +68,8 @@ public class GoToHomePage extends HttpServlet {
 		
 		AlbumDAO albumDAO = new AlbumDAO(connection);
 		try {
-			userAlbums = albumDAO.fetchAlbumsByOwner(currentUser.getId());
-			otherAlbums = albumDAO.fetchAlbumsNotByOwner(currentUser.getId());
+			userAlbums = albumDAO.fetchAlbumsByOwner(currentUserId);
+			otherAlbums = albumDAO.fetchAlbumsNotByOwner(currentUserId);
 		} catch (Exception e) {
 			e.printStackTrace();
 			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error in retrieving albums from the database");
