@@ -70,6 +70,12 @@ public class AddToAlbum extends HttpServlet {
 		AlbumImagesDAO albumImagesDAO = new AlbumImagesDAO(connection);
 		
 		try {
+			if (!albumImagesDAO.checkAlbumOwnership(userId, targetImageId))
+				throw new Exception("Cannot add image to album owned by another user");
+			
+			if (!albumImagesDAO.checkImageOwnership(userId, targetImageId))
+				throw new Exception("Cannot add image owned by another user to your album");
+			
 			albumImagesDAO.addImageToAlbum(userId, targetImageId, targetAlbumId);
 		} catch (SQLException e) {
 			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Unable to add image to album");

@@ -64,8 +64,7 @@ public class AlbumDAO {
 	}
 
 	public Album fetchAlbumById(int albumId) throws SQLException {
-		String query = "SELECT albumId, title, creationDate, ownerId, username FROM Album JOIN User"
-				+ " ON Album.ownerId = User.userId WHERE albumId = ?";
+		String query = "SELECT albumId, title, creationDate, ownerId, username FROM Album WHERE albumId = ?";
 		try (PreparedStatement prepStatement = connection.prepareStatement(query)) {
 			prepStatement.setInt(1, albumId);
 			try (ResultSet res = prepStatement.executeQuery()) {

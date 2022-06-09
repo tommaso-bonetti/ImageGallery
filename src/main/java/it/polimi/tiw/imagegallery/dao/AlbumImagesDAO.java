@@ -12,13 +12,7 @@ public class AlbumImagesDAO {
 		this.connection = connection;
 	}
 	
-	public void addImageToAlbum(int userId, int imageId, int albumId) throws Exception, SQLException {
-		if (!checkAlbumOwnership(userId, albumId))
-			throw new Exception("Cannot add image to album owned by another user");
-		
-		if (!checkImageOwnership(userId, imageId))
-			throw new Exception("Cannot add image owned by another user to your album");
-		
+	public void addImageToAlbum(int userId, int imageId, int albumId) throws SQLException {
 		String query = "INSERT INTO AlbumImages (imageId, albumId) VALUES (?, ?)";
 		try (PreparedStatement prepStatement = connection.prepareStatement(query)) {
 			prepStatement.setInt(1, imageId);
@@ -27,7 +21,7 @@ public class AlbumImagesDAO {
 		}
 	}
 
-	private boolean checkAlbumOwnership(int userId, int albumId) throws Exception {
+	public boolean checkAlbumOwnership(int userId, int albumId) throws Exception {
 		String query = "SELECT * FROM Album WHERE albumId = ? AND ownerId = ?";
 		try (PreparedStatement prepStatement = connection.prepareStatement(query)) {
 			prepStatement.setInt(1, albumId);
@@ -40,7 +34,7 @@ public class AlbumImagesDAO {
 		}
 	}
 	
-	private boolean checkImageOwnership(int userId, int imageId) throws Exception {
+	public boolean checkImageOwnership(int userId, int imageId) throws Exception {
 		String query = "SELECT * FROM Image WHERE imageId = ? AND ownerId = ?";
 		try (PreparedStatement prepStatement = connection.prepareStatement(query)) {
 			prepStatement.setInt(1, imageId);

@@ -81,7 +81,7 @@ public class GoToAlbumPage extends HttpServlet {
 		ImageDAO imageDAO = new ImageDAO(connection);
 		CommentDAO commentDAO = new CommentDAO(connection);
 		try {
-			album = albumDAO.fetchAlbumById(albumId);
+			album = albumDAO.fetchAlbumById(albumId);			
 			images = imageDAO.fetchImagesByAlbum(albumId, page);
 			if (images.isEmpty() && page > 1)
 				throw new Exception();

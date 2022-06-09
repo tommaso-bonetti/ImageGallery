@@ -54,7 +54,13 @@ public class AuthenticateUser extends HttpServlet {
 		String path;
 		
 		try {
+			if (userDAO.getUser(username) == null)
+				throw new Exception("Username does not exist, register to create a new account");
+			
 			user = userDAO.checkCredentials(username, password);
+			
+			if (user == null)
+				throw new Exception("The password is incorrect");
 		} catch (SQLException e) {
 			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Unable to check user credentials");
 			return;
@@ -64,9 +70,6 @@ public class AuthenticateUser extends HttpServlet {
 		}
 		
 		request.getSession().setAttribute("userId", user.getId());
-		System.out.println(request.getSession().getAttribute("userId") != null ?
-				"Successfully saved session" : "Could not save session");
-		System.out.println("Redirecting to root...");
 		path = getServletContext().getContextPath() + "/";
 		response.sendRedirect(path);
 	}

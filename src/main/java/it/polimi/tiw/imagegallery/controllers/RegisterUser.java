@@ -95,18 +95,14 @@ public class RegisterUser extends HttpServlet {
 			} catch (SQLException e) {
 				response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Unable to register new user");
 				return;
+			} catch (Exception e) {
+				response.sendError(HttpServletResponse.SC_CONFLICT, e.getMessage());
+				return;
 			}
 			
-			if (user == null) {
-				response.sendError(HttpServletResponse.SC_CONFLICT, "Username already exists");
-			} else {
-				request.getSession().setAttribute("userId", user.getId());
-				System.out.println(request.getSession().getAttribute("user") != null ?
-						"Successfully saved session" : "Could not save session");
-				System.out.println("Redirecting to root...");
-				path = getServletContext().getContextPath() + "/";
-				response.sendRedirect(path);
-			}
+			request.getSession().setAttribute("userId", user.getId());
+			path = getServletContext().getContextPath() + "/";
+			response.sendRedirect(path);
 		}
 	}
 
