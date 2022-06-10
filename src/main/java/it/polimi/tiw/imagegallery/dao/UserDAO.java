@@ -34,22 +34,21 @@ public class UserDAO {
 		}
 	}
 	
-	public User createUser(String email, String username, String password) throws Exception, SQLException {
+	public User createUser(String email, String username, String password) throws SQLException {
 		User res = null;
 		
 		if (getUser(username) != null)
-			throw new Exception("Username already exists");
-		else {
-			String query = "INSERT INTO User (email, username, password) VALUES (?, ?, ?)";
-			try (PreparedStatement prepStatement = connection.prepareStatement(query)) {
-				prepStatement.setString(1, email);
-				prepStatement.setString(2, username);
-				prepStatement.setString(3, password);
-				
-				int affectedRows = prepStatement.executeUpdate();
-				if (affectedRows == 1)
-					res = getUser(username);
-			}
+			return null;
+		
+		String query = "INSERT INTO User (email, username, password) VALUES (?, ?, ?)";
+		try (PreparedStatement prepStatement = connection.prepareStatement(query)) {
+			prepStatement.setString(1, email);
+			prepStatement.setString(2, username);
+			prepStatement.setString(3, password);
+			
+			int affectedRows = prepStatement.executeUpdate();
+			if (affectedRows == 1)
+				res = getUser(username);
 		}
 		
 		return res;

@@ -108,7 +108,8 @@ public class GoToAlbumPage extends HttpServlet {
 		if (album == null) {
 			response.sendError(HttpServletResponse.SC_NOT_FOUND, "Invalid album selection");
 			return;
-		} else if (selectedImageIdString != null && selectedImage == null) {
+		}
+		if (selectedImageIdString != null && selectedImage == null) {
 			response.sendError(HttpServletResponse.SC_NOT_FOUND, "Invalid image selection");
 			return;
 		}

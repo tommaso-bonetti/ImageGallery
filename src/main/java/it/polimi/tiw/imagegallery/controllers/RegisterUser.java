@@ -3,8 +3,6 @@ package it.polimi.tiw.imagegallery.controllers;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.regex.Pattern;
 
 import javax.servlet.ServletContext;
@@ -63,47 +61,43 @@ public class RegisterUser extends HttpServlet {
 			response.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
 			return;
 		}
-		
-		String path;
-		List<String> errorMessages = new ArrayList<>();
-		
+				
 		if (!emailPattern.matcher(email).matches()) {
-			System.out.println("Invalid email format");
-			errorMessages.add("Invalid email format");
+			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid email format");
+			return;
 		}
 		if (!usernamePattern.matcher(username).matches()) {
-			System.out.println("Username can only contain letters, numbers, underscores, dots and hyphens, must start with a letter");
-			errorMessages.add("Username can only contain letters, numbers, underscores, dots and hyphens, must start with a letter");
+			String message = "Username can only contain letters, numbers, underscores, dots and hyphens, must start with a letter";
+			response.sendError(HttpServletResponse.SC_BAD_REQUEST, message);
+			return;
 		}
 		if (password.length() < 6) {
-			System.out.println("Password needs to be at least 6 characters long");
-			errorMessages.add("Password needs to be at least 6 characters long");
+			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Password needs to be at least 6 characters long");
+			return;
 		}
 		if (!password.equals(repeatPassword)) {
-			System.out.println("Password and repeat password do not match");
-			errorMessages.add("Password and repeat password do not match");
+			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Password and repeat password do not match");
+			return;
 		}
 		
-		if (errorMessages.size() > 0) {
-			response.sendError(HttpServletResponse.SC_BAD_REQUEST, String.join("; ", errorMessages));
-		} else {
-			UserDAO userDAO = new UserDAO(connection);
-			User user = null;
-			
-			try {
-				user = userDAO.createUser(email, username, password);
-			} catch (SQLException e) {
-				response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Unable to register new user");
-				return;
-			} catch (Exception e) {
-				response.sendError(HttpServletResponse.SC_CONFLICT, e.getMessage());
-				return;
-			}
-			
-			request.getSession().setAttribute("userId", user.getId());
-			path = getServletContext().getContextPath() + "/";
-			response.sendRedirect(path);
+		UserDAO userDAO = new UserDAO(connection);
+		User user = null;
+		
+		try {
+			user = userDAO.createUser(email, username, password);
+		} catch (SQLException e) {
+			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Unable to register new user");
+			return;
 		}
+		
+		if (user == null) {
+			response.sendError(HttpServletResponse.SC_CONFLICT, "Username already exists");
+			return;
+		}
+		
+		request.getSession().setAttribute("userId", user.getId());
+		String path = getServletContext().getContextPath() + "/";
+		response.sendRedirect(path);
 	}
 
 	@Override
