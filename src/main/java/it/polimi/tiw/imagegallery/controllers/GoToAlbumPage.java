@@ -1,6 +1,7 @@
 package it.polimi.tiw.imagegallery.controllers;
 
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
@@ -58,6 +59,19 @@ public class GoToAlbumPage extends HttpServlet {
 		Integer userId = (Integer) request.getSession().getAttribute("userId");		
 		if (userId == null) {
 			response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Missing user session");
+			return;
+		}
+		
+		if (albumIdString != null && pageString == null) {
+			String path =	String.format(
+					"/GoToAlbumPage?albumId=%s&page=%s",
+					URLEncoder.encode(albumIdString, "UTF-8"),
+					URLEncoder.encode("1", "UTF-8"));
+			
+			if (selectedImageIdString != null)
+				path += String.format("&selectedImageId=%s", URLEncoder.encode(selectedImageIdString, "UTF-8"));
+			
+			response.sendRedirect(getServletContext().getContextPath() + path);
 			return;
 		}
 		

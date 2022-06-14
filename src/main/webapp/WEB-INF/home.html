@@ -30,7 +30,7 @@
 						<td th:text="${album.ownerUsername}"></td>
 						<td th:text="${album.getFormattedDate()}"></td>
 						<td>
-							<a th:href="@{/GoToAlbumPage(albumId = ${album.id}, page = 1)}">
+							<a th:href="@{/GoToAlbumPage(albumId = ${album.id})}">
 								See more
 							</a>
 						</td>
