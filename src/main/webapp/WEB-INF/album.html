@@ -20,16 +20,24 @@
 		<span th:text="${'created ' + album.getFormattedDate()}">created 10/07/2022</span>
 	</p>
 	<p>
-		<a th:href="@{/GoToImagesPage(albumId = ${album.id})}">Add images</a>
+		<a th:if="${album.ownerId == session.userId}" th:href="@{/GoToImagesPage(albumId = ${album.id})}">Add images</a>
 	</p>
 	
 	<div th:insert="@{WEB-INF/albumimages.html} :: gallery(${images}, ${album.id}, ${page})"></div>
 	
 	<div class="button-container">
-		<a class="align-left" th:if="${page > 1}"
-			 th:href="@{/GoToAlbumPage(albumId = ${album.id}, page = ${page} - 1)}">Show previous</a>
-		<a class="align-right" th:if="${lastPage == false}"
-			 th:href="@{/GoToAlbumPage(albumId = ${album.id}, page = ${page} + 1)}">Show next</a>
+		<div th:if="${selectedImage == null}">
+			<a class="align-left" th:if="${page > 1}"
+				 th:href="@{/GoToAlbumPage(albumId = ${album.id}, page = ${page} - 1)}">Show previous</a>
+			<a class="align-right" th:if="${lastPage == false}"
+				 th:href="@{/GoToAlbumPage(albumId = ${album.id}, page = ${page} + 1)}">Show next</a>
+		</div>
+		<div th:if="${selectedImage != null}">
+			<a class="align-left" th:if="${page > 1}"
+				 th:href="@{/GoToAlbumPage(albumId = ${album.id}, page = ${page} - 1, selectedImageId = ${selectedImage.id})}">Show previous</a>
+			<a class="align-right" th:if="${lastPage == false}"
+				 th:href="@{/GoToAlbumPage(albumId = ${album.id}, page = ${page} + 1, selectedImageId = ${selectedImage.id})}">Show next</a>
+		</div>
 	</div>
 	
 	<div th:if="${selectedImage != null}" class="row">
